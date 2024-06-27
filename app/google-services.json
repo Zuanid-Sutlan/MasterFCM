@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "631428556085",
+    "project_id": "masterfcm-30fd0",
+    "storage_bucket": "masterfcm-30fd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631428556085:android:6eebf25cadad704af9d87c",
+        "android_client_info": {
+          "package_name": "com.devStudio.masterFCM"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAU9VG6p3puCT41jAM8VrQ3eeuu5Gy7xw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
