@@ -1,6 +1,7 @@
 package com.devStudio.masterFCM.service
 
 import android.Manifest
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -15,7 +16,7 @@ import com.devStudio.masterFCM.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class MyFirebaseMessagingService: FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
     override fun onNewToken(token: String) {
@@ -38,22 +39,28 @@ fun showNotification(context: Context, title: String, message: String) {
     val channelName = "New Signal Notification"
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT).apply {
+        val channel = NotificationChannel(
+            channelId,
+            channelName,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
             description = "Default Channel Description"
         }
-        val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 
     val notification = NotificationCompat.Builder(context, channelId)
         .setSmallIcon(android.R.drawable.ic_dialog_info) // TODO: icon of the notification
-        .setAutoCancel(true)
-        .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
-        .setOnlyAlertOnce(true)
+//        .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
+//        .setOnlyAlertOnce(true)
         .setContentTitle(title)
         .setContentText(message)
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
-        .build()
+        .setDefaults(Notification.DEFAULT_ALL)
+        .setPriority(NotificationCompat.PRIORITY_HIGH) // important for hand up notification like whatsapp which appears on the screen for a while
+        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+        .setAutoCancel(true) // important for hand up notification like whatsapp which appears on the screen for a while
 
     with(NotificationManagerCompat.from(context)) {
         if (ActivityCompat.checkSelfPermission(
@@ -70,6 +77,6 @@ fun showNotification(context: Context, title: String, message: String) {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        notify(1, notification)
+        notify(1, notification.build())
     }
 }

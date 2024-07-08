@@ -15,20 +15,23 @@ import java.io.IOException
 object OneSignalApi {
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun send(title: String, content: String){
+    fun send(title: String, content: String) {
         val client = OkHttpClient()
 
         val mediaType = MediaType.parse("application/json")
         val body = RequestBody.create(
-            mediaType,"""
+            mediaType, """
         {
             "app_id": "${AppClass.ONESIGNAL_APP_ID}",
             "included_segments": ["All"],
             "small_icon": "ic_launcher_foreground",
             "contents": {"en": "$content"},
-            "headings": {"en": "$title"}
-        }
-    """.trimIndent())
+            "headings": {"en": "$title"},
+            "priority": 10,
+            "android_category": "msg"
+         }
+    """.trimIndent()
+        )
         val request = Request.Builder()
             .url("https://api.onesignal.com/notifications")
             .post(body)
@@ -43,15 +46,14 @@ object OneSignalApi {
                 if (!response.isSuccessful) {
                     Log.i("send: ", "..${response.code()} ${response.message()}")
                     Log.i("send: ", "..${response.body()} ${response.message()}")
-                }else {
-                    Log.i( "send: ", "else ${response.body()?.string()}")
+                } else {
+                    Log.i("send: ", "else ${response.body()?.string()}")
                 }
             }
         } catch (e: IOException) {
-            Log.i( "send: ", ",  ${e.message}")
+            Log.i("send: ", ",  ${e.message}")
         }
     }
-
 
 
 }
